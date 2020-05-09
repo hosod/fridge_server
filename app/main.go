@@ -11,7 +11,7 @@ func main() {
 	router := gin.Default()
 
 	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello Wolrd")
+		c.String(http.StatusOK, "Hello Wolrd hoge fuga piyo\n")
 	})
 
 	v1 := router.Group("api/v1")

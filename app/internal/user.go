@@ -19,9 +19,10 @@ type Users struct {
 
 //Register register user info to db
 func Register(c *gin.Context) {
-
-	engine, _ := xorm.NewEngine("mysql", "test:test@tcp(db:3306)/test")
-
+// production environment
+	// engine, _ := xorm.NewEngine("mysql", "test:test@tcp(db:3306)/test")
+// dev environment
+	engine, _ := xorm.NewEngine("mysql", "test:test@tcp(db_dev_container:3306)/test")
 	name := c.Query("name")
 	mail := c.Query("mail")
 
