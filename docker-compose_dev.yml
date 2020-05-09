@@ -25,7 +25,7 @@ services:
       -  ./app:/go/src/github.com/hosod/fridge_server/app
     depends_on:
       - db
-    command: go run /go/src/github.com/hosod/fridge_server/app/main.go
+    command: go run /go/src/github.com/hosod/fridge_server/app/main.go -dev true
 
   proxy:
     container_name: proxy_dev_container
