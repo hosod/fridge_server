@@ -4,7 +4,6 @@ import(
 	"log"
 	"fmt"
 
-	// "github.com/hosod/fridge_server/app/internal/entity"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // Use mysql in gorm
 )
@@ -49,7 +48,3 @@ func Close() {
 		log.Fatalln(err)
 	}
 }
-
-// func autoMigration() {
-// 	db.AutoMigrate(&entity.Users{})
-// }
