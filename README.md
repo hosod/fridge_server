@@ -15,7 +15,7 @@
 
 ### ローカルに持ってくる
 以下のコマンドを実行してリポジトリをローカルの好きな場所にクローンします。
-ローカルにgoの環境を作っている場合は`$GO_PATH/src/github.com/hosod/`を作ってその下にcloneしてあげないと、プロジェクト内のパッケージを参照できなくなります。注意してください。
+ローカルにgoの環境を作っている場合は`$GO_PATH/src/github.com/hosod/`を作ってその下にcloneしてあげないと、開発の時にプロジェクト内のパッケージを参照できなくなります。注意してください。
 > git clone https://github.com/hosod/fridge_server.git\
 
 \
