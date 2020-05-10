@@ -23,11 +23,12 @@ services:
       web_image
     depends_on:
       - db
+    command: go run /go/src/github.com/hosod/fridge_server/app/main.go
 
   proxy:
     container_name: proxy_container
     build: 
-      context: ./nginx
+      context: nginx/.
       dockerfile: Dockerfile
     image:
       proxy_image
