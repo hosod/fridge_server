@@ -10,8 +10,8 @@ import(
 // Controller is user controller
 type Controller struct{}
 
-// Index action:   GET /users
-func (ctrl *Controller) Index(c *gin.Context) {
+// ReadAll action: GET /users
+func (ctrl *Controller) ReadAll(c *gin.Context) {
 	var service Service
 	users,err := service.GetAll()
 	if err!=nil {
@@ -30,8 +30,8 @@ func (ctrl *Controller) Create(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, user)
 }
-// ShowByID is show user idで指定されたやつ
-func (ctrl *Controller) ShowByID(c *gin.Context) {
+// ReadByID action: GET /users/:id
+func (ctrl *Controller) ReadByID(c *gin.Context) {
 	var service Service
 	user,err := service.GetByID(c.Params.ByName("id"))
 	if err!=nil {
@@ -40,3 +40,26 @@ func (ctrl *Controller) ShowByID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, user)
 }
+
+// Update action: PUT /users/:id
+func (ctrl *Controller) Update(c *gin.Context) {
+	var service Service
+	user,err := service.UpdateByID(c.Params.ByName("id"), c)
+	if err!=nil {
+		log.Println(err)
+		c.AbortWithStatus(http.StatusBadRequest)
+	}
+	c.JSON(http.StatusOK, user)
+}
+// Delete action: DELETE /users/:id
+func (ctrl *Controller) Delete(c *gin.Context) {
+	var service Service
+	id := c.Params.ByName("id")
+	if err := service.DeleteByID(id); err!=nil {
+		log.Println(err)
+		c.AbortWithStatus(http.StatusForbidden)
+	}
+	c.JSON(http.StatusNoContent, gin.H{"id #"+ id: "deleted successfully"})
+}
+
+
