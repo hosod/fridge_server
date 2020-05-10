@@ -3,6 +3,7 @@ version: "3"
 
 services:
   db:
+    container_name: db_container
     image: mysql:5.7.22
     restart: always
     volumes:
@@ -14,14 +15,23 @@ services:
       MYSQL_DATABASE: test
 
   web:
+    container_name: web_container
     build: 
       context: .
       dockerfile: ./app/Dockerfile
+    image:
+      web_image
     depends_on:
       - db
+    command: go run /go/src/github.com/hosod/fridge_server/app/main.go
 
   proxy:
-    build: nginx/.
+    container_name: proxy_container
+    build: 
+      context: nginx/.
+      dockerfile: Dockerfile
+    image:
+      proxy_image
     ports:
       - 8000:80
     depends_on:

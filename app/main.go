@@ -1,23 +1,19 @@
 package main
 
 import (
-	"net/http"
+	"flag"
 
-	"github.com/gin-gonic/gin"
-	"github.com/hosod/fridge_server/app/internal"
+	"github.com/hosod/fridge_server/app/internal/server"
+	"github.com/hosod/fridge_server/app/internal/database"
+
 )
 
 func main() {
-	router := gin.Default()
+	var dev = flag.Bool("dev", false, "please specify -dev flag")
 
-	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello Wolrd")
-	})
+	flag.Parse()
 
-	v1 := router.Group("api/v1")
-	{
-		v1.POST("/user", users.Register)
-	}
-
-	router.Run(":9000")
+	database.Init(*dev)
+	defer database.Close()
+	server.Init()
 }

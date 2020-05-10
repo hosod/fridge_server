@@ -1,0 +1,42 @@
+  
+version: "3"
+
+services:
+  db:
+    container_name: db_dev_container
+    image: mysql:5.7.22
+    restart: always
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+      MYSQL_DATABASE: test
+
+  web:
+    container_name: web_dev_container
+    build: 
+      context: .
+      dockerfile: ./app/Dockerfile_dev
+    image: 
+      web_dev_image
+    volumes:
+      -  ./app:/go/src/github.com/hosod/fridge_server/app
+    depends_on:
+      - db
+    command: go run /go/src/github.com/hosod/fridge_server/app/main.go -dev true
+
+  proxy:
+    container_name: proxy_dev_container
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile_dev
+    image:
+      proxy_dev_image
+    volumes:
+      - ./nginx/default_dev.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 8000:80
+    depends_on:
+      - web
