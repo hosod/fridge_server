@@ -15,7 +15,7 @@
 
 ### ローカルに持ってくる
 以下のコマンドを実行してリポジトリをローカルの好きな場所にクローンします。
-ローカルにgoの環境を作っている場合は`$GO_PATH/src/github.com/hosod/`を作ってその下にcloneしてあげないと、プロジェクト内のパッケージを参照できなくなります。注意してください。
+ローカルにgoの環境を作っている場合は`$GO_PATH/src/github.com/hosod/`を作ってその下にcloneしてあげないと、開発の時にプロジェクト内のパッケージを参照できなくなります。注意してください。
 > git clone https://github.com/hosod/fridge_server.git\
 
 \
@@ -91,7 +91,17 @@ goの環境を作っている場合は多分下のコマンドを叩いてもロ
     - PUT: idで指定したレコードを更新
     - DELETE: idで指定したレコードを削除
 
-
+## アプリケーションサーバーでの処理
+- main
+    - serverやdatabase の初期化を行う。
+- server
+    - routingやらなんやら
+- database
+    - mysqlとの接続や通信を担う
+- entity
+    - ORMはdatabaseのレコードを構造体に落とし込んでくれる。その構造体の定義をしてる
+- service
+    - サービスロジックとか。
 
 
 
