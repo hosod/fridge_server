@@ -4,11 +4,13 @@ version: "3"
 services:
   db:
     container_name: db_dev_container
-    image: mysql:5.7.22
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile_dev
+    image: db_dev_image
     restart: always
     volumes:
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./mysql/mysql.conf:/etc/mysql/conf.d/mysql.conf
+      - ./mysql/config:/etc/mysql/conf.d
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: test
@@ -26,6 +28,7 @@ services:
       -  ./app:/go/src/github.com/hosod/fridge_server/app
     depends_on:
       - db
+    restart: always
     command: go run /go/src/github.com/hosod/fridge_server/app/main.go -dev true
 
   web:
