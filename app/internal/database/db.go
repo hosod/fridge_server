@@ -1,9 +1,11 @@
 package database
 
 import (
+	// "os"
 	"log"
 	"fmt"
 
+	"github.com/hosod/fridge_server/app/internal/entity"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // Use mysql in gorm
 )
@@ -29,11 +31,18 @@ func Init(isdev bool) {
 		host = "db_container"
 	}
 	protocol := fmt.Sprintf("tcp(%s:3306)", host)
-	connect := fmt.Sprintf("%s:%s@%s/%s", user, pass, protocol, dbname)
+	connect := fmt.Sprintf("%s:%s@%s/%s?parseTime=true", user, pass, protocol, dbname)
 	db,err = gorm.Open(dialect, connect)
 	if err!=nil {
 		log.Fatalln(err)
 	}	
+
+	db.Set("gorm:table_options", "ENGINE=InnoDB")
+	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.Fridge{})
+
+
+	createDummyData()
 }
 // TestInit is initialize local database for testing
 func TestInit() {
@@ -53,5 +62,32 @@ func GetDB() *gorm.DB {
 func Close() {
 	if err := db.Close(); err!=nil {
 		log.Fatalln(err)
+	}
+}
+
+// createDummyData is create some dummy data for the class
+func createDummyData() {
+	var user entity.User
+	user = entity.User{Name:"Yamada", Email:"yamada@mail.com"}
+	if err:=db.Create(&user).Error; err!=nil {
+		log.Println(err)
+	}
+	user = entity.User{Name:"Tanaka", Email:"tanaka@mail.com"}
+	if err:=db.Create(&user).Error; err!=nil {
+		log.Println(err)
+	}
+	user = entity.User{Name:"Suzuki", Email:"suzuki@mail.com"}
+	if err:=db.Create(&user).Error; err!=nil {
+		log.Println(err)
+	}
+
+	var fridge entity.Fridge
+	fridge = entity.Fridge{Name:"山田家"}
+	if err:=db.Create(&fridge).Error; err!=nil {
+		log.Println(err)
+	}
+	fridge = entity.Fridge{Name:"寮のやつ"}
+	if err:=db.Create(&fridge).Error; err!=nil {
+		log.Println(err)
 	}
 }
