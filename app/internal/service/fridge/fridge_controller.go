@@ -1,55 +1,56 @@
-package user
+package fridge
 
 import(
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-
 )
-// Controller is user controller
+// Controller is 
 type Controller struct{}
 
-// ReadAll action: GET /users
+//ReadAll is  read
 func (ctrl *Controller) ReadAll(c *gin.Context) {
 	var service Service
-	users,err := service.GetAll()
+	fridges,err := service.GetAll()
 	if err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusNotFound)
 	}
-	c.JSON(http.StatusOK, users)
+	c.JSON(http.StatusOK,fridges)
 }
-// Create action: POST /users
+// Create is 
 func (ctrl *Controller) Create(c *gin.Context) {
 	var service Service
-	user,err := service.CreateModel(c)
+	fridge,err := service.CreateModel(c)
 	if err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusBadRequest)
 	}
-	c.JSON(http.StatusCreated, user)
+	c.JSON(http.StatusCreated, fridge)
 }
-// ReadByID action: GET /users/:id
+// ReadByID is 
 func (ctrl *Controller) ReadByID(c *gin.Context) {
 	var service Service
-	user,err := service.GetByID(c.Params.ByName("id"))
+	fridge,err := service.GetByID(c.Params.ByName("id"))
+	log.Println(fridge.Name)
 	if err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusNotFound)
 	}
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, fridge)
 }
-
-// Update action: PUT /users/:id
+//Update action: PUT /users/:id
 func (ctrl *Controller) Update(c *gin.Context) {
 	var service Service
-	user,err := service.UpdateByID(c.Params.ByName("id"), c)
+	id := c.Params.ByName("id")
+	fridge,err := service.UpdateByID(id,c)
 	if err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusBadRequest)
 	}
-	c.JSON(http.StatusOK, user)
+	c.Header("Content-Type", "application/json; charset=utf-8")
+	c.JSON(http.StatusOK, fridge)
 }
 // Delete action: DELETE /users/:id
 func (ctrl *Controller) Delete(c *gin.Context) {
@@ -60,6 +61,5 @@ func (ctrl *Controller) Delete(c *gin.Context) {
 		c.AbortWithStatus(http.StatusForbidden)
 	}
 	c.JSON(http.StatusNoContent, gin.H{"id #"+ id: "deleted successfully"})
+
 }
-
-

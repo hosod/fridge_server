@@ -4,7 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hosod/fridge_server/app/internal/service"
+	"github.com/hosod/fridge_server/app/internal/service/user"
+	"github.com/hosod/fridge_server/app/internal/service/fridge"
 )
 
 // Init is initialize server
@@ -28,6 +29,17 @@ func makeRouter() *gin.Engine {
 		u.GET("/:id", userCtrl.ReadByID)
 		u.PUT("/:id", userCtrl.Update)
 		u.DELETE("/:id", userCtrl.Delete)
+		// u.GET("/names", userCtrl.)
+	}
+
+	f := router.Group("/fridges")
+	{
+		fridgeCtrl := fridge.Controller{}
+		f.GET("", fridgeCtrl.ReadAll)
+		f.POST("", fridgeCtrl.Create)
+		f.GET("/:id", fridgeCtrl.ReadByID)
+		f.PUT("/:id", fridgeCtrl.Update)
+		f.DELETE("/:id", fridgeCtrl.Delete)
 	}
 
 	return router
