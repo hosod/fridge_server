@@ -75,4 +75,13 @@ func (s *Service) DeleteByID(id string) error {
 	return nil
 }
 
+// GetWholeNameList returns user name list
+func (s * Service) GetWholeNameList() ([]string, error){
+	db := database.GetDB()
+	var names []string
+	db.Table("users").Pluck("name", &names)
+
+	return names,nil
+}
+
 

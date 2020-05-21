@@ -14,25 +14,25 @@ services:
       MYSQL_PASSWORD: test
       MYSQL_DATABASE: test
 
-  web:
-    container_name: web_container
+  app:
+    container_name: app_container
     build: 
       context: .
       dockerfile: ./app/Dockerfile
     image:
-      web_image
+      app_image
     depends_on:
       - db
     command: go run /go/src/github.com/hosod/fridge_server/app/main.go
 
-  proxy:
-    container_name: proxy_container
+  web:
+    container_name: web_container
     build: 
       context: nginx/.
       dockerfile: Dockerfile
     image:
-      proxy_image
+      web_image
     ports:
       - 8000:80
     depends_on:
-      - web
+      - app

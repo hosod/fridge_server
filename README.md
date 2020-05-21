@@ -91,7 +91,17 @@ goの環境を作っている場合は多分下のコマンドを叩いてもロ
     - PUT: idで指定したレコードを更新
     - DELETE: idで指定したレコードを削除
 
-
+## アプリケーションサーバーでの処理
+- main
+    - serverやdatabase の初期化を行う。
+- server
+    - routingやらなんやら
+- database
+    - mysqlとの接続や通信を担う
+- entity
+    - ORMはdatabaseのレコードを構造体に落とし込んでくれる。その構造体の定義をしてる
+- service
+    - サービスロジックとか。
 
 
 

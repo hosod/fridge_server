@@ -1,6 +1,6 @@
 package database
 
-import(
+import (
 	"log"
 	"fmt"
 
@@ -28,13 +28,20 @@ func Init(isdev bool) {
 	} else {
 		host = "db_container"
 	}
-	log.Println(host)
 	protocol := fmt.Sprintf("tcp(%s:3306)", host)
 	connect := fmt.Sprintf("%s:%s@%s/%s", user, pass, protocol, dbname)
 	db,err = gorm.Open(dialect, connect)
 	if err!=nil {
 		log.Fatalln(err)
 	}	
+}
+// TestInit is initialize local database for testing
+func TestInit() {
+	connect := "test:test@/test?charset=utf8&parseTime=True&loc=Local"
+	db,err = gorm.Open(dialect, connect)
+	if err!=nil {
+		log.Fatalln(err)
+	}
 }
 
 // GetDB is called in models
