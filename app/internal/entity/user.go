@@ -1,6 +1,7 @@
 package entity
 
 
+
 //User is user info
 type User struct {
 	ID    int    `json:"id"`
