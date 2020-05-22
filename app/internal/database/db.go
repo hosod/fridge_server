@@ -67,8 +67,12 @@ func Close() {
 
 // createDummyData is create some dummy data for the class
 func createDummyData() {
-	var user entity.User
-	user = entity.User{Name:"Yamada", Email:"yamada@mail.com"}
+	createDummyUserData()
+	createDummyFridgeData()
+	createUserFridgeRelation()
+}
+func createDummyUserData() {
+	user := entity.User{Name:"Yamada", Email:"yamada@mail.com"}
 	if err:=db.Create(&user).Error; err!=nil {
 		log.Println(err)
 	}
@@ -80,14 +84,28 @@ func createDummyData() {
 	if err:=db.Create(&user).Error; err!=nil {
 		log.Println(err)
 	}
+}
 
-	var fridge entity.Fridge
-	fridge = entity.Fridge{Name:"山田家"}
+func createDummyFridgeData() {
+	fridge := entity.Fridge{Name:"山田家"}
 	if err:=db.Create(&fridge).Error; err!=nil {
 		log.Println(err)
 	}
 	fridge = entity.Fridge{Name:"寮のやつ"}
 	if err:=db.Create(&fridge).Error; err!=nil {
 		log.Println(err)
+	}
+}
+
+func createUserFridgeRelation() {
+	var relations = [][]int{
+		{1,1},{2,2},{3,2},
+	}
+	for _,relation:=range relations {
+		var user entity.User
+		var fridge entity.Fridge
+		user.ID = relation[0]
+		fridge.ID = relation[1]
+		db.Model(&user).Association("Fridge").Append(&fridge)
 	}
 }
