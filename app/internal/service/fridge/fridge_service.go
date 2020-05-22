@@ -71,4 +71,13 @@ func (s *Service) DeleteByID(id string) error {
 	}
 	return nil
 }
+// GetUserList is return user list fridge have
+func (s *Service) GetUserList(fridgeID string) ([]*entity.User, error) {
+	db := database.GetDB()
+	var fridge Fridge
+	if err:=db.Where("id=?",fridgeID).Preload("User").First(&fridge).Error;err!=nil {
+		return nil,err
+	}
+	return fridge.User, nil
+}
 

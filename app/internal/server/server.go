@@ -29,6 +29,7 @@ func makeRouter() *gin.Engine {
 		u.GET("/:id", userCtrl.ReadByID)
 		u.PUT("/:id", userCtrl.Update)
 		u.DELETE("/:id", userCtrl.Delete)
+		u.GET("/:id/fridges", userCtrl.GetFridgeList)
 		// u.GET("/names", userCtrl.)
 	}
 
@@ -40,6 +41,7 @@ func makeRouter() *gin.Engine {
 		f.GET("/:id", fridgeCtrl.ReadByID)
 		f.PUT("/:id", fridgeCtrl.Update)
 		f.DELETE("/:id", fridgeCtrl.Delete)
+		f.GET("/:id/users", fridgeCtrl.GetUserList)
 	}
 
 	return router

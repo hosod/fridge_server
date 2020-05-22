@@ -61,5 +61,15 @@ func (ctrl *Controller) Delete(c *gin.Context) {
 		c.AbortWithStatus(http.StatusForbidden)
 	}
 	c.JSON(http.StatusNoContent, gin.H{"id #"+ id: "deleted successfully"})
-
+}
+// GetUserList is action: GET /users/:id/fridges
+func (ctrl *Controller) GetUserList(c *gin.Context) {
+	var service Service
+	fridgeID := c.Params.ByName("id")
+	users,err := service.GetUserList(fridgeID)
+	if err!=nil {
+		log.Println(err)
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+	c.JSON(http.StatusOK, users)
 }

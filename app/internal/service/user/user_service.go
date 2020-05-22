@@ -11,6 +11,8 @@ type Service struct{}
 // User is alias of entity.User struct
 type User entity.User
 
+
+
 // GetAll return list of all users
 func (s *Service) GetAll() ([]User, error) {
 	db := database.GetDB()
@@ -82,6 +84,17 @@ func (s * Service) GetWholeNameList() ([]string, error){
 	db.Table("users").Pluck("name", &names)
 
 	return names,nil
+}
+
+// GetFridgeList is return fridge list user have
+func (s *Service) GetFridgeList(id string) ([]*entity.Fridge, error) {
+	db := database.GetDB()
+	var user User
+	if err:=db.Where("id=?",id).Preload("Fridge").First(&user).Error;err!=nil {
+		return nil,err
+	}
+	
+	return user.Fridge,nil
 }
 
 
