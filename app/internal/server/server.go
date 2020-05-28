@@ -42,5 +42,15 @@ func makeRouter() *gin.Engine {
 		f.DELETE("/:id", fridgeCtrl.Delete)
 	}
 
+	fg := router.Group("/food_genres")
+	{
+		foodGenreCtrl := foodGenre.Controller{}
+		fg.GET("", foodGenreCtrl.ReadAll)
+		fg.POST("", foodGenreCtrl.Create)
+		fg.GET("/:id", foodGenreCtrl.ReadByID)
+		fg.PUT("/:id", foodGenreCtrl.Update)
+		fg.DELETE("/:id", foodGenreCtrl.Delete)
+	}
+
 	return router
 }
