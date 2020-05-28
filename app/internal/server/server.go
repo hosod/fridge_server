@@ -45,7 +45,7 @@ func makeRouter() *gin.Engine {
 
 	fg := router.Group("/food_genres")
 	{
-		foodGenreCtrl := foodGenre.Controller{}
+		foodGenreCtrl := food_genre.Controller{}
 		fg.GET("", foodGenreCtrl.ReadAll)
 		fg.POST("", foodGenreCtrl.Create)
 		fg.GET("/:id", foodGenreCtrl.ReadByID)
