@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/hosod/fridge_server/app/internal/service/user"
 	"github.com/hosod/fridge_server/app/internal/service/fridge"
+	"github.com/hosod/fridge_server/app/internal/service/food_genre"
 )
 
 // Init is initialize server
@@ -40,6 +41,16 @@ func makeRouter() *gin.Engine {
 		f.GET("/:id", fridgeCtrl.ReadByID)
 		f.PUT("/:id", fridgeCtrl.Update)
 		f.DELETE("/:id", fridgeCtrl.Delete)
+	}
+
+	fg := router.Group("/food_genres")
+	{
+		foodGenreCtrl := food_genre.Controller{}
+		fg.GET("", foodGenreCtrl.ReadAll)
+		fg.POST("", foodGenreCtrl.Create)
+		fg.GET("/:id", foodGenreCtrl.ReadByID)
+		fg.PUT("/:id", foodGenreCtrl.Update)
+		fg.DELETE("/:id", foodGenreCtrl.Delete)
 	}
 
 	return router
