@@ -60,17 +60,7 @@ func (ctrl *Controller) Delete(c *gin.Context) {
 	}
 	c.JSON(http.StatusNoContent, gin.H{"id #"+ id: "deleted successfully"})
 }
-// GetFridgeList is action: GET /users/:id/fridges
-func(ctrl Controller) GetFridgeList(c *gin.Context) {
-	var service Service
-	id := c.Params.ByName("id")
-	fridges,err := service.GetFridgeList(id)
-	if err!=nil {
-		log.Println(err)
-		c.AbortWithStatus(http.StatusNotFound)
-	}
-	c.JSON(http.StatusOK, fridges)
 
-}
+
 
 
