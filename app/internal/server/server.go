@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/hosod/fridge_server/app/internal/service/user"
 	"github.com/hosod/fridge_server/app/internal/service/fridge"
+	"github.com/hosod/fridge_server/app/internal/service/food_genre"
 )
 
 // Init is initialize server
