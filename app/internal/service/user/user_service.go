@@ -11,6 +11,8 @@ type Service struct{}
 // User is alias of entity.User struct
 type User entity.User
 
+
+
 // GetAll return list of all users
 func (s *Service) GetAll() ([]User, error) {
 	db := database.GetDB()

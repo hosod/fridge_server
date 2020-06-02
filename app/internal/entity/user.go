@@ -1,8 +1,5 @@
 package entity
 
-// import (
-// 	"github.com/jinzhu/gorm"
-// )
 
 //User is user info
 type User struct {
@@ -10,4 +7,7 @@ type User struct {
 	ID int `json:"id"`
 	Name  string `json:"name" gorm:"not null"`
 	Email string `json:"email" gorm:"unique;not null"`
+	FollowFridge []*Fridge `gorm:"many2many:user_follow_fridge;" json:"-"`
+	MyFridge Fridge `json:"-" gorm:"foreignkey:MyFridgeID"`
+	MyFridgeID int `json:"-"`
 }

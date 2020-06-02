@@ -1,4 +1,4 @@
-package user
+package food_genre
 
 import(
 	"log"
@@ -6,63 +6,59 @@ import(
 
 	"github.com/gin-gonic/gin"
 )
-// Controller is user controller
+// Controller is food genre controller
 type Controller struct{}
 
-// ReadAll action: GET /users
+// ReadAll action: GET /food_genres
 func (ctrl *Controller) ReadAll(c *gin.Context) {
 	var service Service
-	users,err := service.GetAll()
+	food_genres,err := service.GetAll()
 	if err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusNotFound)
 	}
-	c.JSON(http.StatusOK, users)
+	c.JSON(http.StatusOK, food_genres)
 }
-// Create action: POST /users
+// Create action: POST /food_genres
 func (ctrl *Controller) Create(c *gin.Context) {
 	var service Service
-	user,err := service.CreateModel(c)
+	food_genre,err := service.CreateModel(c)
 	if err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusBadRequest)
 	}
-	c.JSON(http.StatusCreated, user)
+	c.JSON(http.StatusCreated, food_genre)
 }
-// ReadByID action: GET /users?uid={user_id}
+// ReadByID action: GET /food_genres/:id
 func (ctrl *Controller) ReadByID(c *gin.Context) {
 	var service Service
-	userID := c.Query("uid")
-	user,err := service.GetByID(userID)
+	food_genre,err := service.GetByID(c.Params.ByName("id"))
 	if err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusNotFound)
 	}
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, food_genre)
 }
 
-// Update action: PUT /users?uid={user_id}
+// Update action: PUT /food_genres/:id
 func (ctrl *Controller) Update(c *gin.Context) {
 	var service Service
-	userID := c.Query("uid")
-	user,err := service.UpdateByID(userID, c)
+	food_genre,err := service.UpdateByID(c.Params.ByName("id"), c)
 	if err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusBadRequest)
 	}
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, food_genre)
 }
-// Delete action: DELETE /users?uid={user_id}
+// Delete action: DELETE /food_genres/:id
 func (ctrl *Controller) Delete(c *gin.Context) {
 	var service Service
-	userID := c.Query("uid")
-	if err := service.DeleteByID(userID); err!=nil {
+	id := c.Params.ByName("id")
+	if err := service.DeleteByID(id); err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusForbidden)
 	}
-	c.JSON(http.StatusNoContent, gin.H{"id #"+ userID: "deleted successfully"})
+	c.JSON(http.StatusNoContent, gin.H{"id #"+ id: "deleted successfully"})
 }
-
-
 
 

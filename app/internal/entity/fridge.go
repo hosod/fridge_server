@@ -4,4 +4,5 @@ package entity
 type Fridge struct {
 	ID int `json:"id"`
 	Name string `json:"name" gorm:"not null"`
+	User []*User `gorm:"many2many:user_follow_fridge;" json:"-"`
 }
