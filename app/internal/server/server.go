@@ -36,12 +36,14 @@ func makeRouter() *gin.Engine {
 	f := router.Group("/fridges")
 	{
 		fridgeCtrl := fridge.Controller{}
-		f.GET("", fridgeCtrl.ReadAll)
+		// f.GET("", fridgeCtrl.ReadAll)
+		f.GET("", fridgeCtrl.ReadByID)
 		f.POST("", fridgeCtrl.Create)
-		f.GET("/:id", fridgeCtrl.ReadByID)
-		f.PUT("/:id", fridgeCtrl.Update)
-		f.DELETE("/:id", fridgeCtrl.Delete)
-		f.GET("/:id/users", fridgeCtrl.GetUserList)
+		f.PUT("", fridgeCtrl.Update)
+		f.DELETE("", fridgeCtrl.Delete)
+		f.GET("/my-fridge", fridgeCtrl.GetMyFridge)
+		f.GET("/follow-fridges", fridgeCtrl.GetFollowFridge)
+		// f.GET("/:id/users", fridgeCtrl.GetUserList)
 	}
 
 	fg := router.Group("/food_genres")

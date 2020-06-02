@@ -40,6 +40,7 @@ func Init(isdev bool) {
 	db.Set("gorm:table_options", "ENGINE=InnoDB")
 	db.AutoMigrate(&entity.User{})
 	db.AutoMigrate(&entity.Fridge{})
+	db.AutoMigrate(&entity.FoodGenre{})
 
 
 	createDummyData()
@@ -70,17 +71,22 @@ func createDummyData() {
 	createDummyUserData()
 	createDummyFridgeData()
 	createUserFridgeRelation()
+	createDummyFoodGenreData()
 }
 func createDummyUserData() {
-	user := entity.User{Name:"Yamada", Email:"yamada@mail.com"}
+	user := entity.User{Name:"Yamada", Email:"yamada@mail.com", MyFridgeID:1}
 	if err:=db.Create(&user).Error; err!=nil {
 		log.Println(err)
 	}
-	user = entity.User{Name:"Tanaka", Email:"tanaka@mail.com"}
+	user = entity.User{Name:"Tanaka", Email:"tanaka@mail.com", MyFridgeID:2}
 	if err:=db.Create(&user).Error; err!=nil {
 		log.Println(err)
 	}
-	user = entity.User{Name:"Suzuki", Email:"suzuki@mail.com"}
+	user = entity.User{Name:"Suzuki", Email:"suzuki@mail.com", MyFridgeID:2}
+	if err:=db.Create(&user).Error; err!=nil {
+		log.Println(err)
+	}
+	user = entity.User{Name:"Sato", Email:"sato@mail.com", MyFridgeID:3}
 	if err:=db.Create(&user).Error; err!=nil {
 		log.Println(err)
 	}
@@ -95,17 +101,32 @@ func createDummyFridgeData() {
 	if err:=db.Create(&fridge).Error; err!=nil {
 		log.Println(err)
 	}
+	fridge = entity.Fridge{Name:"佐藤家"}
+	if err:=db.Create(&fridge).Error; err!=nil {
+		log.Println(err)
+	}
+}
+
+func createDummyFoodGenreData() {
+	foodGenre := entity.FoodGenre{Name:"野菜", Unit:"個"}
+	if err:=db.Create(&foodGenre).Error; err!=nil {
+		log.Println(err)
+	}
+	foodGenre = entity.FoodGenre{Name: "飲料", Unit:"ml"}
+	if err:=db.Create(&foodGenre).Error; err!=nil {
+		log.Println(err)
+	}
 }
 
 func createUserFridgeRelation() {
 	var relations = [][]int{
-		{1,1},{2,2},{3,2},
+		{1,2},{2,3},{1,3},
 	}
 	for _,relation:=range relations {
 		var user entity.User
 		var fridge entity.Fridge
 		user.ID = relation[0]
 		fridge.ID = relation[1]
-		db.Model(&user).Association("Fridge").Append(&fridge)
+		db.Model(&user).Association("FollowFridge").Append(&fridge)
 	}
 }

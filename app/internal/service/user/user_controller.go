@@ -32,6 +32,7 @@ func (ctrl *Controller) Create(c *gin.Context) {
 // ReadByID action: GET /users/:id
 func (ctrl *Controller) ReadByID(c *gin.Context) {
 	var service Service
+	// id := c.Query("uid")
 	user,err := service.GetByID(c.Params.ByName("id"))
 	if err!=nil {
 		log.Println(err)
