@@ -29,11 +29,11 @@ func (ctrl *Controller) Create(c *gin.Context) {
 	}
 	c.JSON(http.StatusCreated, user)
 }
-// ReadByID action: GET /users/:id
+// ReadByID action: GET /users?uid={user_id}
 func (ctrl *Controller) ReadByID(c *gin.Context) {
 	var service Service
-	// id := c.Query("uid")
-	user,err := service.GetByID(c.Params.ByName("id"))
+	userID := c.Query("uid")
+	user,err := service.GetByID(userID)
 	if err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusNotFound)
@@ -41,25 +41,26 @@ func (ctrl *Controller) ReadByID(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// Update action: PUT /users/:id
+// Update action: PUT /users?uid={user_id}
 func (ctrl *Controller) Update(c *gin.Context) {
 	var service Service
-	user,err := service.UpdateByID(c.Params.ByName("id"), c)
+	userID := c.Query("uid")
+	user,err := service.UpdateByID(userID, c)
 	if err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusBadRequest)
 	}
 	c.JSON(http.StatusOK, user)
 }
-// Delete action: DELETE /users/:id
+// Delete action: DELETE /users?uid={user_id}
 func (ctrl *Controller) Delete(c *gin.Context) {
 	var service Service
-	id := c.Params.ByName("id")
-	if err := service.DeleteByID(id); err!=nil {
+	userID := c.Query("uid")
+	if err := service.DeleteByID(userID); err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusForbidden)
 	}
-	c.JSON(http.StatusNoContent, gin.H{"id #"+ id: "deleted successfully"})
+	c.JSON(http.StatusNoContent, gin.H{"id #"+ userID: "deleted successfully"})
 }
 
 
