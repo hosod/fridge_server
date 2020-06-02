@@ -25,11 +25,11 @@ func makeRouter() *gin.Engine {
 	u := router.Group("/users") 
 	{
 		userCtrl := user.Controller{}
-		u.GET("", userCtrl.ReadAll)
+		// u.GET("", userCtrl.ReadAll)
 		u.POST("", userCtrl.Create)
-		u.GET("/:id", userCtrl.ReadByID)
-		u.PUT("/:id", userCtrl.Update)
-		u.DELETE("/:id", userCtrl.Delete)
+		u.GET("", userCtrl.ReadByID)
+		u.PUT("", userCtrl.Update)
+		u.DELETE("", userCtrl.Delete)
 		
 	}
 
