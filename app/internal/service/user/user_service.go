@@ -83,6 +83,7 @@ func (s * Service) GetWholeNameList() ([]string, error){
 	var names []string
 	db.Table("users").Pluck("name", &names)
 
+
 	return names,nil
 }
 

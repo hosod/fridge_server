@@ -5,6 +5,7 @@ import (
 )
 
 // Content is contents of a fridge
+// DBのテーブル定義用の構造体
 type Content struct {
 	ID int `json:"id"`
 	ExpirationDate time.Time `json:"expiration_date" sql:"not null;type:date"`

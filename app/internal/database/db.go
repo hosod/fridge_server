@@ -41,6 +41,8 @@ func Init(isdev bool) {
 	db.AutoMigrate(&entity.User{})
 	db.AutoMigrate(&entity.Fridge{})
 	db.AutoMigrate(&entity.FoodGenre{})
+	db.AutoMigrate(&entity.FoodType{})
+	db.AutoMigrate(&entity.Content{})
 
 
 	createDummyData()
@@ -108,7 +110,12 @@ func createDummyFridgeData() {
 }
 
 func createDummyFoodGenreData() {
+
 	foodGenre := entity.FoodGenre{Name:"野菜", Unit:"個"}
+	if err:=db.Create(&foodGenre).Error; err!=nil {
+		log.Println(err)
+	}
+	foodGenre = entity.FoodGenre{Name:"果物",Unit:"個"}
 	if err:=db.Create(&foodGenre).Error; err!=nil {
 		log.Println(err)
 	}
@@ -116,6 +123,12 @@ func createDummyFoodGenreData() {
 	if err:=db.Create(&foodGenre).Error; err!=nil {
 		log.Println(err)
 	}
+}
+
+func createDummyFoodTypeData() {
+	foodType := entity.FoodType{Name:"りんご" }
+	"https://drive.google.com/file/d/17u54jrbPtqa8EdRUH6TVZdBFGDwIzziW/view?usp=sharing"
+
 }
 
 func createUserFridgeRelation() {

@@ -7,4 +7,6 @@ type FoodType struct {
 	Image string `json:"img_url"`
 	Genre FoodGenre `json:"-" gorm:"foreignkey:GenreID"`
 	GenreID int `json:"-"`
+	// Genre FoodGenre `json:"-" gorm:"foreignkey:GenreID"`
+	// GenreID int `json:"-"`
 }
