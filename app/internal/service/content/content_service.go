@@ -1,7 +1,7 @@
 package content
 
 import (
-	"log"
+	// "log"
 	"time"
 
 
@@ -29,8 +29,8 @@ func (s *Service) GetByID(id string) (ContentResult, error) {
 
 	db.Where("id=?", id).First(&content)
 	// log.Println(content.FoodType)
-	db.Where("id=?",content.FoodTypeID).First(foodType)
-	db.Where("id=?", foodType.GenreID).First(foodGenre)
+	db.Where("id=?",content.FoodTypeID).First(&foodType)
+	db.Where("id=?", foodType.GenreID).First(&foodGenre)
 	contentResult = ContentResult{
 		ID:content.ID,
 		Name:foodType.Name,
@@ -40,6 +40,4 @@ func (s *Service) GetByID(id string) (ContentResult, error) {
 	}
 
 	return contentResult,nil
-
-
 }
