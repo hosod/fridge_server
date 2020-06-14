@@ -21,3 +21,15 @@ func (ctrl *Controller) ReadByID(c *gin.Context) {
 		c.JSON(http.StatusOK, contentResult)
 	}
 }
+// Create is action: POST /contents
+func (ctrl *Controller) Create(c *gin.Context) {
+	var service Service
+	content,err := service.CreateModel(c)
+	if err!=nil {
+		log.Println(err)
+		c.AbortWithStatus(http.StatusBadRequest)
+	} else {
+
+		c.JSON(http.StatusOK, gin.H{"id":content.ID,"status":"post successfully"})
+	}
+}

@@ -61,7 +61,7 @@ func makeRouter() *gin.Engine {
 	{
 		contentCtrl := content.Controller{}
 		c.GET("", contentCtrl.ReadByID)
-
+		c.POST("", contentCtrl.Create)
 	}
 
 	return router
