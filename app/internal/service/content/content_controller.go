@@ -13,6 +13,9 @@ type Controller struct{}
 func (ctrl *Controller) ReadByID(c *gin.Context) {
 	var service Service
 	contentID := c.Query("cid")
+
+	hoge := c.Query("hoge")
+	log.Println("hoge:",hoge)
 	contentResult,err := service.GetByID(contentID)
 	if err!=nil {
 		log.Println(err)
@@ -32,4 +35,17 @@ func (ctrl *Controller) Create(c *gin.Context) {
 
 		c.JSON(http.StatusOK, gin.H{"id":content.ID,"status":"post successfully"})
 	}
+}
+// ReadByFridgeID is action: GET contents/fridge?fid={fridge_id}
+func (ctrl *Controller) ReadByFridgeID(c *gin.Context) {
+	var service Service
+	fridgeID := c.Query("fid")
+	contentResultList,err := service.GetByFridgeID(fridgeID)
+	if err!=nil {
+		log.Println(err)
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, contentResultList)
+	}
+
 }

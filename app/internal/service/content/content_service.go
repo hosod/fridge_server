@@ -19,6 +19,9 @@ type ContentResult struct{
 	Quantity float32 `json:"quantity"`
 	Genre entity.FoodGenre `json:"genre"`
 }
+type ContentResultList struct {
+	Foods []*ContentResult `json:"foods"`
+}
 
 var tokyo,_ = time.LoadLocation("Asia/Tokyo")
 
@@ -51,6 +54,38 @@ func (s *Service) GetByID(id string) (ContentResult, error) {
 
 	return contentResult,nil
 }
+// GetByFridgeID is 
+func (s *Service) GetByFridgeID(fridgeID string) (ContentResultList,error) {
+	db := database.GetDB()
+	var contentResultList ContentResultList
+	var contents []Content
+	db.Where("fridge_id=?",fridgeID).Find(&contents)
+	rows,err := db.Table("contents").
+		Select("contents.id,food_types.name,contents.quantity,contents.expiration_date,food_genres.id,food_genres.name,food_genres.unit").
+		Joins("join food_types on food_types.id=contents.food_type_id").
+		Joins("join food_genres on food_genres.id=food_types.genre_id").Rows()
+	if err!=nil {
+		return contentResultList,err
+	}
+	contentResultList.Foods = make([]*ContentResult,0)
+	for rows.Next() {
+		var contentID, genreID int
+		var typeName,contentsDate,genreName,genreUnit string
+		var quantity float32
+		rows.Scan(&contentID,&typeName,&quantity,&contentsDate,&genreID,&genreName,&genreUnit)
+		
+		contentResult := ContentResult{
+			ID:contentID,
+			Name:typeName,
+			ExpirationDate:contentsDate,
+			Quantity:quantity,
+			Genre: entity.FoodGenre{ID:genreID,Name:genreName,Unit:genreUnit},
+		}
+		contentResultList.Foods = append(contentResultList.Foods, &contentResult)
+	}
+	return contentResultList,nil
+}
+
 // CreateModel create content data and return it
 func (s *Service)CreateModel(c *gin.Context) (Content,error) {
 	db := database.GetDB()

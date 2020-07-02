@@ -62,6 +62,7 @@ func makeRouter() *gin.Engine {
 		contentCtrl := content.Controller{}
 		c.GET("", contentCtrl.ReadByID)
 		c.POST("", contentCtrl.Create)
+		c.GET("/fridge", contentCtrl.ReadByFridgeID)
 	}
 
 	return router
