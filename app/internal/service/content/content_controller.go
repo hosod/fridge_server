@@ -36,7 +36,7 @@ func (ctrl *Controller) Create(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"id":content.ID,"status":"post successfully"})
 	}
 }
-// ReadByFridgeID is action: GET contents/fridge?fid={fridge_id}
+// ReadByFridgeID is action: GET /contents/fridge?fid={fridge_id}
 func (ctrl *Controller) ReadByFridgeID(c *gin.Context) {
 	var service Service
 	fridgeID := c.Query("fid")
@@ -47,5 +47,16 @@ func (ctrl *Controller) ReadByFridgeID(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, contentResultList)
 	}
-
+}
+// ReadByUserID is action: GET /contents/user?uid={user_id}
+func (ctrl *Controller) ReadByUserID(c * gin.Context) {
+	var service Service
+	userID := c.Query("uid")
+	contentResultList,err := service.GetByUserID(userID)
+	if err!=nil {
+		log.Println(err)
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusOK, contentResultList)
+	}
 }

@@ -3,6 +3,7 @@ package content
 import (
 	"log"
 	"time"
+	"strconv"
 
 
 	"github.com/gin-gonic/gin"
@@ -40,10 +41,15 @@ func (s *Service) GetByID(id string) (ContentResult, error) {
 	var foodType entity.FoodType
 	var foodGenre entity.FoodGenre
 
-	db.Where("id=?", id).First(&content)
-	// log.Println(content.FoodType)
-	db.Where("id=?",content.FoodTypeID).First(&foodType)
-	db.Where("id=?", foodType.GenreID).First(&foodGenre)
+	if err:=db.Where("id=?", id).First(&content).Error;err!=nil {
+		return contentResult,err
+	}
+	if err:=db.Where("id=?",content.FoodTypeID).First(&foodType).Error; err!=nil {
+		return contentResult,err
+	}
+	if err:=db.Where("id=?", foodType.GenreID).First(&foodGenre).Error; err!=nil {
+		return contentResult,err
+	}
 	contentResult = ContentResult{
 		ID:content.ID,
 		Name:foodType.Name,
@@ -54,15 +60,14 @@ func (s *Service) GetByID(id string) (ContentResult, error) {
 
 	return contentResult,nil
 }
-// GetByFridgeID is 
+// GetByFridgeID is return list of contents which are contained a fridge(friodgeID)
 func (s *Service) GetByFridgeID(fridgeID string) (ContentResultList,error) {
 	db := database.GetDB()
 	var contentResultList ContentResultList
-	var contents []Content
-	db.Where("fridge_id=?",fridgeID).Find(&contents)
+	
 	rows,err := db.Table("contents").
 		Select("contents.id,food_types.name,contents.quantity,contents.expiration_date,food_genres.id,food_genres.name,food_genres.unit").
-		Joins("join food_types on food_types.id=contents.food_type_id").
+		Joins("join food_types on food_types.id=contents.food_type_id and contents.fridge_id=?",fridgeID).
 		Joins("join food_genres on food_genres.id=food_types.genre_id").Rows()
 	if err!=nil {
 		return contentResultList,err
@@ -73,7 +78,6 @@ func (s *Service) GetByFridgeID(fridgeID string) (ContentResultList,error) {
 		var typeName,contentsDate,genreName,genreUnit string
 		var quantity float32
 		rows.Scan(&contentID,&typeName,&quantity,&contentsDate,&genreID,&genreName,&genreUnit)
-		
 		contentResult := ContentResult{
 			ID:contentID,
 			Name:typeName,
@@ -84,6 +88,16 @@ func (s *Service) GetByFridgeID(fridgeID string) (ContentResultList,error) {
 		contentResultList.Foods = append(contentResultList.Foods, &contentResult)
 	}
 	return contentResultList,nil
+}
+// GetByUserID is get list of contents which are owned by a user(userID)
+func (s *Service) GetByUserID(userID string) (ContentResultList,error) {
+	db := database.GetDB()
+	var contentResultList ContentResultList
+	var user entity.User
+	if err:=db.Where("id=?",userID).First(&user).Error; err!=nil {
+		return contentResultList,err
+	}
+	return s.GetByFridgeID(strconv.Itoa(user.MyFridgeID))
 }
 
 // CreateModel create content data and return it
