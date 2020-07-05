@@ -3,9 +3,8 @@ package main
 import (
 	"flag"
 
-	"github.com/hosod/fridge_server/app/internal/server"
 	"github.com/hosod/fridge_server/app/internal/database"
-
+	"github.com/hosod/fridge_server/app/internal/server"
 )
 
 func main() {

@@ -7,6 +7,7 @@ import (
 	"github.com/hosod/fridge_server/app/internal/service/user"
 	"github.com/hosod/fridge_server/app/internal/service/fridge"
 	"github.com/hosod/fridge_server/app/internal/service/food_genre"
+	"github.com/hosod/fridge_server/app/internal/service/content"
 )
 
 // Init is initialize server
@@ -54,6 +55,14 @@ func makeRouter() *gin.Engine {
 		fg.GET("/:id", foodGenreCtrl.ReadByID)
 		fg.PUT("/:id", foodGenreCtrl.Update)
 		fg.DELETE("/:id", foodGenreCtrl.Delete)
+	}
+
+	c := router.Group("/contents")
+	{
+		contentCtrl := content.Controller{}
+		c.GET("", contentCtrl.ReadByID)
+		c.POST("", contentCtrl.Create)
+		c.GET("/fridge", contentCtrl.ReadByFridgeID)
 	}
 
 	return router
