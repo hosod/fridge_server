@@ -54,6 +54,7 @@ func makeRouter() *gin.Engine {
 		fg.GET("/:id", foodGenreCtrl.ReadByID)
 		fg.PUT("/:id", foodGenreCtrl.Update)
 		fg.DELETE("/:id", foodGenreCtrl.Delete)
+		fg.GET("/:iid", foodGenreCtrl.ReadImgByID)
 	}
 
 	return router

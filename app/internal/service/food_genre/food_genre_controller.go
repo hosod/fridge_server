@@ -3,6 +3,7 @@ package food_genre
 import(
 	"log"
 	"net/http"
+	"image/png"
 
 	"github.com/gin-gonic/gin"
 )
@@ -59,6 +60,17 @@ func (ctrl *Controller) Delete(c *gin.Context) {
 		c.AbortWithStatus(http.StatusForbidden)
 	}
 	c.JSON(http.StatusNoContent, gin.H{"id #"+ id: "deleted successfully"})
+}
+
+// ReadImgByID action: GET /food_genres/:iid
+func (ctrl *Controller) ReadImgByID(c *gin.Context) {
+	var service Service
+	img_food_genre,err := service.GetImgByID(c.Params.ByName("iid"), c)
+	if err!=nil {
+		log.Println(err)
+		c.AbortWithStatus(http.StatusNotFound)
+	}
+	c.Data(http.StatusOK, "image/png", img_food_genre)
 }
 
 

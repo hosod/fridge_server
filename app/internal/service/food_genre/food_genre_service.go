@@ -4,6 +4,8 @@ import(
 	"github.com/gin-gonic/gin"
 	"github.com/hosod/fridge_server/app/internal/database"
 	"github.com/hosod/fridge_server/app/internal/entity"
+
+    "os"
 )
 
 // Service is related to food genre
@@ -73,6 +75,21 @@ func (s *Service) DeleteByID(id string) error {
 		return err
 	}
 	return nil
+}
+
+func (s * Service) GetImgByID(id string) (*File, error) {
+	img_vege, _ := os.Open("../../imgs/flower_vegebouquet.png")
+	img_meat, _ := os.Open("../../imgs/food_niku_pack.png")
+	img_veba, _ := os.Open("../../imgs/soda6_skyblue.png")
+	if id == "vege" {
+		return img_vege, nil
+	} else if id == "meat" {
+		return img_meat, nil
+	} else if id == "veba" {
+		return img_veba, nil
+	} else {
+		return img_vege, nil
+	}
 }
 
 // GetWholeNameList returns food genre name list
