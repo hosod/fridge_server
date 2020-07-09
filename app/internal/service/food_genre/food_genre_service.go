@@ -4,8 +4,6 @@ import(
 	"github.com/gin-gonic/gin"
 	"github.com/hosod/fridge_server/app/internal/database"
 	"github.com/hosod/fridge_server/app/internal/entity"
-
-    "os"
 )
 
 // Service is related to food genre
@@ -77,18 +75,17 @@ func (s *Service) DeleteByID(id string) error {
 	return nil
 }
 
-func (s * Service) GetImgByID(id string) (*File, error) {
-	img_vege, _ := os.Open("../../imgs/flower_vegebouquet.png")
-	img_meat, _ := os.Open("../../imgs/food_niku_pack.png")
-	img_veba, _ := os.Open("../../imgs/soda6_skyblue.png")
+func (s * Service) GetImgByID(id string, c *gin.Context) string {
+	img_vege := "../../imgs/flower_vegebouquet.png"
+	img_meat := "../../imgs/food_niku_pack.png"
+	img_veba := "../../imgs/soda6_skyblue.png"
+
 	if id == "vege" {
-		return img_vege, nil
+		return img_vege
 	} else if id == "meat" {
-		return img_meat, nil
-	} else if id == "veba" {
-		return img_veba, nil
+		return img_meat
 	} else {
-		return img_vege, nil
+		return img_veba
 	}
 }
 
