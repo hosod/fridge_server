@@ -1,6 +1,7 @@
 package content
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -27,13 +28,13 @@ func (ctrl *Controller) ReadByID(c *gin.Context) {
 // Create is action: POST /contents
 func (ctrl *Controller) Create(c *gin.Context) {
 	var service Service
-	content,err := service.CreateModel(c)
+	contentList,err := service.CreateModel(c)
 	if err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusBadRequest)
 	} else {
 
-		c.JSON(http.StatusOK, gin.H{"id":content.ID,"status":"post successfully"})
+		c.JSON(http.StatusOK, gin.H{"message":fmt.Sprintf("%d contents are registered successfully", len(contentList))})
 	}
 }
 // Delete is action: DELETE /contents?cid={content_id}

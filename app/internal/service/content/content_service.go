@@ -34,6 +34,9 @@ type PostForm struct {
 	FridgeID int `json:"fridge_id"`
 	FoodTypeID int `json:"food_type_id"`
 }
+type PostFormList struct {
+	FormList []*PostForm `json:"foods"`
+}
 // GetByID ois read data from id
 func (s *Service) GetByID(id string) (ContentResult, error) {
 	db := database.GetDB()
@@ -116,28 +119,34 @@ func (s *Service) GetByUserID(userID string) (ContentResultList,error) {
 
 
 // CreateModel create content data and return it
-func (s *Service)CreateModel(c *gin.Context) (Content,error) {
+func (s *Service)CreateModel(c *gin.Context) ([]Content,error) {
 	db := database.GetDB()
-	var contentForm PostForm
+	var postFormList PostFormList
 	var content Content
-	if err:=c.BindJSON(&contentForm);err!=nil {
+	contentList := []Content{}
+	if err:=c.BindJSON(&postFormList);err!=nil {
 		log.Println("BindJSON error")
-		return content,err
-	}
-	date,err := time.Parse("2006/01/02", contentForm.ExpirationDate)
-	if err!=nil {
-		log.Println(err)
-		return content,err
-	}
-	content = Content{
-		ExpirationDate:date,
-		Quantity:contentForm.Quantity,
-		FridgeID:contentForm.FridgeID,
-		FoodTypeID:contentForm.FoodTypeID,
+		return contentList,err
 	}
 
-	if err:=db.Create(&content).Error; err!=nil {
-		return content,err
+	for _,postForm := range postFormList.FormList {
+		date,err := time.Parse("2006/01/02", postForm.ExpirationDate)
+		if err!=nil {
+			log.Println(err)
+			continue
+		}
+		content = Content{
+			ExpirationDate: date,
+			Quantity: postForm.Quantity,
+			FridgeID: postForm.FridgeID,
+			FoodTypeID: postForm.FoodTypeID,
+		}
+		if err:=db.Create(&content).Error; err!=nil {
+			log.Println(err)
+			continue
+		}
+		contentList = append(contentList, content)
 	}
-	return content,nil
+	
+	return contentList,nil
 }
