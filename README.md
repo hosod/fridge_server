@@ -99,8 +99,8 @@ MySQLのコンテナの起動と認証に時間がかかることがあります
     - GET: user_idで指定したユーザーがフォローしている冷蔵庫を返す
         - response: {"id":1, "name":"hosod's home"}
 - http://localhost:8000/contents
-    - POST: レコードを追加
-        - format: {"expiration_date":"2020/05/29", "quantity":1.5, "fridge_id":1,"food_type_id":1}
+    - POST: レコードを追加。基本的にまとめて登録することを考えるので、リスト形式でまとめて渡す。
+        - format: {"foods":[{"expiration_date":"2020/05/29", "quantity":1.5, "fridge_id":1,"food_type_id":1},...]}
 - http://localhost:8000/contents?cid={content_id}
     - GET: idで指定したレコードがjsonで返ってくる
         - response: {"id":1, "name":"apple","expiration_date":"2020/07/28","quantity":2, "image":"http://localhost:8000/image/url", "genre":{"id":1, "name":"fruits","unit":"個"}}
