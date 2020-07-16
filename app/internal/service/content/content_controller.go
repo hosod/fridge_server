@@ -36,6 +36,18 @@ func (ctrl *Controller) Create(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"id":content.ID,"status":"post successfully"})
 	}
 }
+// Delete is action: DELETE /contents?cid={content_id}
+func (ctrl *Controller) Delete(c *gin.Context) {
+	var service Service
+	id := c.DefaultQuery("cid", "0")
+	err := service.DeleteByID(id)
+	if err!=nil {
+		log.Println(err)
+		c.AbortWithStatus(http.StatusNotFound)
+	} else {
+		c.JSON(http.StatusNoContent, gin.H{"id #"+ id: "deleted successfully"})
+	}
+}
 // ReadByFridgeID is action: GET /contents/fridge?fid={fridge_id}
 func (ctrl *Controller) ReadByFridgeID(c *gin.Context) {
 	var service Service

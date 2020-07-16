@@ -74,18 +74,18 @@ func (s *Service) DeleteByID(id string) error {
 	}
 	return nil
 }
-
+// GetImgByID returns icon image for image_id
 func (s * Service) GetImgByID(id string, c *gin.Context) string {
-	img_vege := "/go/src/github.com/hosod/fridge_server/app/imgs/flower_vegebouquet.png"
-	img_meat := "/go/src/github.com/hosod/fridge_server/app/imgs/food_niku_pack.png"
-	img_veba := "/go/src/github.com/hosod/fridge_server/app/imgs/soda6_skyblue.png"
+	imgVege := "/go/src/github.com/hosod/fridge_server/app/imgs/flower_vegebouquet.png"
+	imgMeat := "/go/src/github.com/hosod/fridge_server/app/imgs/food_niku_pack.png"
+	imgVeba := "/go/src/github.com/hosod/fridge_server/app/imgs/soda6_skyblue.png"
 
 	if id == "vege" {
-		return img_vege
+		return imgVege
 	} else if id == "meat" {
-		return img_meat
+		return imgMeat
 	} else {
-		return img_veba
+		return imgVeba
 	}
 }
 
