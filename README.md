@@ -91,7 +91,13 @@ MySQLのコンテナの起動と認証に時間がかかることがあります
         - response: {"id":1, "name":"hosod's home"}
     - PUT: idで指定したレコードを更新
         - format: {"name":"hosod's home"}
-    - DELETE: odで指定したレコードを削除
+    - DELETE: idで指定したレコードを削除
+- http://localhost:8000/fridges/my-fridge?uid={user_id}
+    - GET: user_idで指定したユーザーが所持している冷蔵庫を返す
+        - response: {"id":1, "name":"hosod's home"}
+- http://localhost:8000/fridges/follow-fridges?uid={user_id}
+    - GET: user_idで指定したユーザーがフォローしている冷蔵庫を返す
+        - response: {"id":1, "name":"hosod's home"}
 - http://localhost:8000/contents
     - POST: レコードを追加
         - format: {"expiration_date":"2020/05/29", "quantity":1.5, "fridge_id":1,"food_type_id":1}
