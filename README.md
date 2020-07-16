@@ -103,14 +103,14 @@ MySQLのコンテナの起動と認証に時間がかかることがあります
         - format: {"expiration_date":"2020/05/29", "quantity":1.5, "fridge_id":1,"food_type_id":1}
 - http://localhost:8000/contents?cid={content_id}
     - GET: idで指定したレコードがjsonで返ってくる
-        - response: {"id":1, "name":"apple","expiration_date":"2020/07/28","quantity":2,"genre":{"id":1, "name":"fruits","unit":"個"}}
+        - response: {"id":1, "name":"apple","expiration_date":"2020/07/28","quantity":2, "image":"http://localhost:8000/image/url", "genre":{"id":1, "name":"fruits","unit":"個"}}
     - DELETE: idで指定したレコードを削除
 - http://localhost:8000/contents/user?uid={user_id}
     - GET: 指定したuser_idのuserが所持している冷蔵庫に入っている食品のリスト
-        - response: {"foods":[{"id":1, "name":"apple","expiration_date":"2020/07/28","quantity":2,"genre":{"id":1, "name":"fruits","unit":"個"}},...]}
+        - response: {"foods":[{"id":1, "name":"apple","expiration_date":"2020/07/28","quantity":2, "image":"http://localhost:8000/image/url", "genre":{"id":1, "name":"fruits","unit":"個"}},...]}
 - http://localhost:8000/contents/fridge?fid={fridge_id}
     - GET: 指定したfridge_idの冷蔵庫に入っている食品のリスト
-        - response: {"foods":[{"id":1, "name":"apple","expiration_date":"2020/07/28","quantity":2,"genre":{"id":1, "name":"fruits","unit":"個"}},...]}
+        - response: {"foods":[{"id":1, "name":"apple","expiration_date":"2020/07/28","quantity":2, "image":"http://localhost:8000/image/url", "genre":{"id":1, "name":"fruits","unit":"個"}},...]}
 
 ## アプリケーションサーバーでの処理
 - main
