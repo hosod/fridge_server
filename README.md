@@ -15,7 +15,7 @@
 
 ### ローカルに持ってくる
 以下のコマンドを実行してリポジトリをローカルの好きな場所にクローンします。
-> git clone https://github.com/hosod/fridge_server.git\
+> git clone https://github.com/hosod/fridge_server.git
 
 goの環境を作っている場合は多分下のコマンドを叩いてもローカルにダウンロードできます。こっちではGO_PATHの下に自動で展開してくれます。
 >go get github.com/hosod/fridge_server
