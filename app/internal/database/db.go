@@ -95,6 +95,30 @@ func createDummyUserData() {
 	if err:=db.Create(&user).Error; err!=nil {
 		log.Println(err)
 	}
+	user = entity.User{Name:"John", Email:"john@mail.com", MyFridgeID:4}
+	if err:=db.Create(&user).Error; err!=nil {
+		log.Println(err)
+	}
+	user = entity.User{Name:"Bob", Email:"bob@mail.com", MyFridgeID:4}
+	if err:=db.Create(&user).Error; err!=nil {
+		log.Println(err)
+	}
+	user = entity.User{Name:"Emily", Email:"emily@mail.com", MyFridgeID:5}
+	if err:=db.Create(&user).Error; err!=nil {
+		log.Println(err)
+	}
+	user = entity.User{Name:"Takahashi", Email:"takahashi@mail.com", MyFridgeID:6}
+	if err:=db.Create(&user).Error; err!=nil {
+		log.Println(err)
+	}
+	user = entity.User{Name:"Nakamura", Email:"nakamura@mail.com", MyFridgeID:6}
+	if err:=db.Create(&user).Error; err!=nil {
+		log.Println(err)
+	}
+	user = entity.User{Name:"Kondo", Email:"kondo@mail.com", MyFridgeID:6}
+	if err:=db.Create(&user).Error; err!=nil {
+		log.Println(err)
+	}
 }
 
 func createDummyFridgeData() {
@@ -107,6 +131,18 @@ func createDummyFridgeData() {
 		log.Println(err)
 	}
 	fridge = entity.Fridge{Name:"佐藤家"}
+	if err:=db.Create(&fridge).Error; err!=nil {
+		log.Println(err)
+	}
+	fridge = entity.Fridge{Name:"留学生寮のやつ"}
+	if err:=db.Create(&fridge).Error; err!=nil {
+		log.Println(err)
+	}
+	fridge = entity.Fridge{Name:"Emily's house"}
+	if err:=db.Create(&fridge).Error; err!=nil {
+		log.Println(err)
+	}
+	fridge = entity.Fridge{Name:"社用冷蔵庫"}
 	if err:=db.Create(&fridge).Error; err!=nil {
 		log.Println(err)
 	}
@@ -126,30 +162,51 @@ func createDummyFoodGenreData() {
 	if err:=db.Create(&foodGenre).Error; err!=nil {
 		log.Println(err)
 	}
+	foodGenre = entity.FoodGenre{Name: "菓子", Unit:"個"}
+	if err:=db.Create(&foodGenre).Error; err!=nil {
+		log.Println(err)
+	}
+	foodGenre = entity.FoodGenre{Name: "液体調味料", Unit:"ml"}
+	if err:=db.Create(&foodGenre).Error; err!=nil {
+		log.Println(err)
+	}
+	foodGenre = entity.FoodGenre{Name: "固体調味料", Unit:"g"}
+	if err:=db.Create(&foodGenre).Error; err!=nil {
+		log.Println(err)
+	}
 }
 
 func createDummyFoodTypeData() {
-	foodType := entity.FoodType{Name:"りんご",Image:"https://hoge_apple",GenreID:2}
+	// for demonstration
+	imgVege := "http://localhost:8000/food_genres/imgs?iid=vege"
+	imgMeat := "http://localhost:8000/food_genres/imgs?iid=meat"
+	imgVeba := "http://localhost:8000/food_genres/imgs?iid=drink"
+
+	foodType := entity.FoodType{Name:"りんご",Image:imgVege, GenreID:2}
 	if err:=db.Create(&foodType).Error; err!=nil {
 		log.Println(err)
 	}
-	foodType = entity.FoodType{Name:"バナナ",Image:"https://hoge_banana",GenreID:2}
+	foodType = entity.FoodType{Name:"バナナ",Image:imgVege,GenreID:2}
 	if err:=db.Create(&foodType).Error; err!=nil {
 		log.Println(err)
 	}
-	foodType = entity.FoodType{Name:"にんじん",Image:"https://hoge_nin",GenreID:1}
+	foodType = entity.FoodType{Name:"にんじん",Image:imgVege,GenreID:1}
 	if err:=db.Create(&foodType).Error; err!=nil {
 		log.Println(err)
 	}
-	foodType = entity.FoodType{Name:"玉ねぎ",Image:"https://hoge_onion",GenreID:1}
+	foodType = entity.FoodType{Name:"玉ねぎ",Image:imgVege,GenreID:1}
 	if err:=db.Create(&foodType).Error; err!=nil {
 		log.Println(err)
 	}
-	foodType = entity.FoodType{Name:"豚ひき肉",Image:"https://hoge_meet",GenreID:3}
+	foodType = entity.FoodType{Name:"豚ひき肉",Image:imgMeat,GenreID:3}
 	if err:=db.Create(&foodType).Error; err!=nil {
 		log.Println(err)
 	}
-	foodType = entity.FoodType{Name:"鶏胸肉",Image:"https://hoge_Chicken",GenreID:3}
+	foodType = entity.FoodType{Name:"鶏胸肉",Image:imgMeat,GenreID:3}
+	if err:=db.Create(&foodType).Error; err!=nil {
+		log.Println(err)
+	}
+	foodType = entity.FoodType{Name:"サイダー",Image:imgVeba, GenreID:5}
 	if err:=db.Create(&foodType).Error; err!=nil {
 		log.Println(err)
 	}
@@ -172,7 +229,7 @@ func createDummyContentData() {
 }
 func createUserFridgeRelation() {
 	var relations = [][]int{
-		{1,2},{2,3},{1,3},
+		{1,2},{2,3},{1,3},{3,4},{2,6},
 	}
 	for _,relation:=range relations {
 		var user entity.User
