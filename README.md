@@ -15,27 +15,26 @@
 
 ### ローカルに持ってくる
 以下のコマンドを実行してリポジトリをローカルの好きな場所にクローンします。
-ローカルにgoの環境を作っている場合は`$GO_PATH/src/github.com/hosod/`を作ってその下にcloneしてあげないと、開発の時にプロジェクト内のパッケージを参照できなくなります。注意してください。
 > git clone https://github.com/hosod/fridge_server.git\
 
-\
 goの環境を作っている場合は多分下のコマンドを叩いてもローカルにダウンロードできます。こっちではGO_PATHの下に自動で展開してくれます。
 >go get github.com/hosod/fridge_server
 
 ### 外部パッケージ
-以下の外部パッケージに依存しています。サーバーを実行する分にはこれらがインストールされている必要はありませんが、ローカルで開発を行う時にエディタの自動補完等を効かせたい場合は`go get`で以下のパッケージをインストールしてください。
+以下の外部パッケージに依存しています。dockerコンテナ上で動くのでサーバーを実行するだけならこれらがインストールされている必要はありません。
 - github.com/gin-gonic/gin
 - github.com/go-sql-driver/mysql
 - github.com/jinzhu/gorm
 
 ## サーバーの操作
-詳しくないのでわかりませんが以下の操作ではbashスクリプトを使っているのでWindowでは実行できません。
-直接`-f`オプションを指定してdocker-composeしてあげてください。
-### サーバーの実行
-リポジトリの一番上に移動して以下のコマンドを実行してください。開発用のサーバーが実行されます。初回はビルドに時間がかかります。
-`docker ps -a`でコンテナがうまく立ち上がったか確認できます。うまくいかなかったらもう一度スクリプトを実行してみてください。
-> sh run_docker_compose_dev.sh
 
+### サーバーの実行
+`run_docker_compose_dev.sh`は開発用のコンテナを起動するスリプトファイルです。
+サーバーを起動するときは基本的にこれを実行してください。
+初回はビルドに時間がかかります。
+`docker ps -a`でコンテナがうまく立ち上がったか確認できます。
+MySQLのコンテナの起動と認証に時間がかかることがあります。
+10秒くらい待ってください。\\
 本番用のサーバーを実行するには以下のコマンドを実行してください。
 > sh run_docker_compose.sh
 
@@ -45,9 +44,8 @@ goの環境を作っている場合は多分下のコマンドを叩いてもロ
     - 起動スクリプトの再実行で実装の変更が反映される
     - 開発していく時は基本的にこっちを使う
 - 本番用のサーバー
-    - イメージの再ビルドをしないと実装の変更が反映されない
-    - イメージとDBの初期化ファイルだけでコンテナを実行できる
-    - たぶん動かすだけならこっちの方が楽
+    - イメージをビルドし直さないと実装の変更が反映されない
+    - イメージとDBの初期化ファイルだけでコンテナを実行できる(デプロイが楽だけど今回はあまり関係ない)
 
 
 ### サーバーの停止
@@ -55,57 +53,58 @@ goの環境を作っている場合は多分下のコマンドを叩いてもロ
 > sh down_docker_compose.sh
 
 ## DB
-### usersテーブル
+データベースには以下のようなテーブルがあります。
+各テーブルの定義などを見たい場合はDBのコンテナに入って直接確認してください。
 <pre>
-+-------+------------------+------+-----+---------+----------------+
-| Field | Type             | Null | Key | Default | Extra          |
-+-------+------------------+------+-----+---------+----------------+
-| id    | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
-| name  | varchar(255)     | YES  |     | NULL    |                |
-| email | varchar(255)     | YES  |     | NULL    |                |
-+-------+------------------+------+-----+---------+----------------+
++--------------------+
+| Tables_in_DB       |
++--------------------+
+| contents           |
+| food_genres        |
+| food_types         |
+| fridges            |
+| user_follow_fridge |
+| users              |
++--------------------+
 </pre>
-### fridgesテーブル
-<pre>
-+-------+--------------+------+-----+---------+----------------+
-| Field | Type         | Null | Key | Default | Extra          |
-+-------+--------------+------+-----+---------+----------------+
-| id    | int(11)      | NO   | PRI | NULL    | auto_increment |
-| name  | varchar(255) | NO   |     | NULL    |                |
-+-------+--------------+------+-----+---------+----------------+
-</pre>
+
 
 ## web API
 
 以下のURLはlocalで動いているサーバーにリクエストすることを前提にしています。
-他の端末からリクエストする場合はサーバーを動かしている端末のIPを調べて、`localhost`の部分を書き換えてください。
+他の端末からリクエストする場合はサーバーを動かしている端末のIPを調べて、ホストの部分を書き換えてください。
 - http://localhost:8000/users 
-    - GET: usersテーブルの全レコードがjson形式で返ってくる
     - POST: データベースに登録
-- http://localhost:8000/users/:id
+        - format: {"name":"hosod", "email":"hosoda@mail.com"}
+- http://localhost:8000/users?uid={user_id}
     - GET: idで指定したレコードがjsonで返ってくる
+        - response: {"id":1, "name":"hosod","email":"hosod@mail.com"}
     - PUT: idで指定したレコードを更新
+        - format: {"name":"hosod", "email":"hosoda@mail.com"}
     - DELETE: idで指定したレコードを削除
-`/usersへのGETで返ってくるjsonの例`
->[
->    {
->        "id":1,
->        "name":"Yamada",
->        "email":"yamada@mail.com"
->    },
->    {
->        "id":2,
->        "name":"Tanaka",
->        "email":"tanaka@mail.com"
->    },...
->]
+
 - http://localhost:8000/fridges
-    - GET: fridgesテーブルの全レコードが帰ってくる
     - POST: レコードを追加
-- http://localhost:8000/fridges/:id
+        - format: {"name":"hosod's home"}
+- http://localhost:8000/fridges?fid={fridge_id}
     - GET: idで指定したレコードが返ってくる
-    - POST: idで指定したレコードを更新
+        - response: {"id":1, "name":"hosod's home"}
+    - PUT: idで指定したレコードを更新
+        - format: {"name":"hosod's home"}
     - DELETE: odで指定したレコードを削除
+- http://localhost:8000/contents
+    - POST: レコードを追加
+        - format: {"expiration_date":"2020/05/29", "quantity":1.5, "fridge_id":1,"food_type_id":1}
+- http://localhost:8000/contents?cid={content_id}
+    - GET: idで指定したレコードがjsonで返ってくる
+        - response: {"id":1, "name":"apple","expiration_date":"2020/07/28","quantity":2,"genre":{"id":1, "name":"fruits","unit":"個"}}
+    - DELETE: idで指定したレコードを削除
+- http://localhost:8000/contents/user?uid={user_id}
+    - GET: 指定したuser_idのuserが所持している冷蔵庫に入っている食品のリスト
+        - response: {"foods":[{"id":1, "name":"apple","expiration_date":"2020/07/28","quantity":2,"genre":{"id":1, "name":"fruits","unit":"個"}},...]}
+- http://localhost:8000/contents/fridge?fid={fridge_id}
+    - GET: 指定したfridge_idの冷蔵庫に入っている食品のリスト
+        - response: {"foods":[{"id":1, "name":"apple","expiration_date":"2020/07/28","quantity":2,"genre":{"id":1, "name":"fruits","unit":"個"}},...]}
 
 ## アプリケーションサーバーでの処理
 - main
