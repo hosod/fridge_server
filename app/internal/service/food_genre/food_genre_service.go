@@ -76,9 +76,9 @@ func (s *Service) DeleteByID(id string) error {
 }
 
 func (s * Service) GetImgByID(id string, c *gin.Context) string {
-	img_vege := "../../imgs/flower_vegebouquet.png"
-	img_meat := "../../imgs/food_niku_pack.png"
-	img_veba := "../../imgs/soda6_skyblue.png"
+	img_vege := "/go/src/github.com/hosod/fridge_server/app/imgs/flower_vegebouquet.png"
+	img_meat := "/go/src/github.com/hosod/fridge_server/app/imgs/food_niku_pack.png"
+	img_veba := "/go/src/github.com/hosod/fridge_server/app/imgs/soda6_skyblue.png"
 
 	if id == "vege" {
 		return img_vege

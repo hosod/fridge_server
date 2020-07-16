@@ -32,7 +32,7 @@ func (ctrl *Controller) Create(c *gin.Context) {
 // ReadByID action: GET /food_genres/:id
 func (ctrl *Controller) ReadByID(c *gin.Context) {
 	var service Service
-	food_genre,err := service.GetByID(c.Params.ByName("id"))
+	food_genre,err := service.GetByID(c.Query("id"))
 	if err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusNotFound)
@@ -43,7 +43,7 @@ func (ctrl *Controller) ReadByID(c *gin.Context) {
 // Update action: PUT /food_genres/:id
 func (ctrl *Controller) Update(c *gin.Context) {
 	var service Service
-	food_genre,err := service.UpdateByID(c.Params.ByName("id"), c)
+	food_genre,err := service.UpdateByID(c.Query("id"), c)
 	if err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusBadRequest)
@@ -53,7 +53,7 @@ func (ctrl *Controller) Update(c *gin.Context) {
 // Delete action: DELETE /food_genres/:id
 func (ctrl *Controller) Delete(c *gin.Context) {
 	var service Service
-	id := c.Params.ByName("id")
+	id := c.Query("id")
 	if err := service.DeleteByID(id); err!=nil {
 		log.Println(err)
 		c.AbortWithStatus(http.StatusForbidden)
@@ -64,7 +64,7 @@ func (ctrl *Controller) Delete(c *gin.Context) {
 // ReadImgByID action: GET /food_genres/:iid
 func (ctrl *Controller) ReadImgByID(c *gin.Context) {
 	var service Service
-	img_food_genre := service.GetImgByID(c.Params.ByName("iid"), c)
+	img_food_genre := service.GetImgByID(c.Query("iid"), c)
 	// if err!=nil {
 	//	log.Println(err)
 	//	c.AbortWithStatus(http.StatusNotFound)
