@@ -75,6 +75,20 @@ func (s *Service) DeleteByID(id string) error {
 	return nil
 }
 
+func (s * Service) GetImgByID(id string, c *gin.Context) string {
+	img_vege := "/go/src/github.com/hosod/fridge_server/app/imgs/flower_vegebouquet.png"
+	img_meat := "/go/src/github.com/hosod/fridge_server/app/imgs/food_niku_pack.png"
+	img_veba := "/go/src/github.com/hosod/fridge_server/app/imgs/soda6_skyblue.png"
+
+	if id == "vege" {
+		return img_vege
+	} else if id == "meat" {
+		return img_meat
+	} else {
+		return img_veba
+	}
+}
+
 // GetWholeNameList returns food genre name list
 func (s * Service) GetWholeNameList() ([]string, error){
 	db := database.GetDB()

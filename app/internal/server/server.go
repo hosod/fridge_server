@@ -52,9 +52,10 @@ func makeRouter() *gin.Engine {
 		foodGenreCtrl := food_genre.Controller{}
 		fg.GET("", foodGenreCtrl.ReadAll)
 		fg.POST("", foodGenreCtrl.Create)
-		fg.GET("/:id", foodGenreCtrl.ReadByID)
-		fg.PUT("/:id", foodGenreCtrl.Update)
-		fg.DELETE("/:id", foodGenreCtrl.Delete)
+		fg.GET("/", foodGenreCtrl.ReadByID)
+		fg.PUT("/", foodGenreCtrl.Update)
+		fg.DELETE("/", foodGenreCtrl.Delete)
+		fg.GET("/imgs", foodGenreCtrl.ReadImgByID)
 	}
 
 	c := router.Group("/contents")
