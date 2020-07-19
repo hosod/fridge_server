@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hosod/fridge_server/app/internal/service/user"
-	"github.com/hosod/fridge_server/app/internal/service/fridge"
-	"github.com/hosod/fridge_server/app/internal/service/food_genre"
 	"github.com/hosod/fridge_server/app/internal/service/content"
+	"github.com/hosod/fridge_server/app/internal/service/food_genre"
+	"github.com/hosod/fridge_server/app/internal/service/fridge"
+	"github.com/hosod/fridge_server/app/internal/service/user"
 )
 
 // Init is initialize server
@@ -23,7 +23,7 @@ func makeRouter() *gin.Engine {
 		c.String(http.StatusOK, "Hello world.\n")
 	})
 
-	u := router.Group("/users") 
+	u := router.Group("/users")
 	{
 		userCtrl := user.Controller{}
 		// u.GET("", userCtrl.ReadAll)
@@ -31,7 +31,7 @@ func makeRouter() *gin.Engine {
 		u.GET("", userCtrl.ReadByID)
 		u.PUT("", userCtrl.Update)
 		u.DELETE("", userCtrl.Delete)
-		
+
 	}
 
 	f := router.Group("/fridges")
@@ -63,6 +63,7 @@ func makeRouter() *gin.Engine {
 		contentCtrl := content.Controller{}
 		c.GET("", contentCtrl.ReadByID)
 		c.POST("", contentCtrl.Create)
+		c.PUT("", contentCtrl.Update)
 		c.DELETE("", contentCtrl.Delete)
 		c.GET("/fridge", contentCtrl.ReadByFridgeID)
 		c.GET("/user", contentCtrl.ReadByUserID)
