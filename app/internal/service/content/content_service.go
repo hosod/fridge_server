@@ -59,7 +59,7 @@ func (s *Service) GetByID(id string) (ContentResult, error) {
 		Name:           foodType.Name,
 		ExpirationDate: content.ExpirationDate.Format("2006/01/02"),
 		Quantity:       content.Quantity,
-		Image:          foodType.Name,
+		Image:          foodType.Image,
 		Genre:          foodGenre,
 	}
 
@@ -118,7 +118,7 @@ func (s *Service) GetByFridgeID(fridgeID string) (ContentResultList, error) {
 		var contentID, genreID int
 		var typeName, contentsDate, image, genreName, genreUnit string
 		var quantity float32
-		rows.Scan(&contentID, &typeName, &quantity, &image, &contentsDate, &genreID, &genreName, &genreUnit)
+		rows.Scan(&contentID, &typeName, &quantity, &contentsDate, &image, &genreID, &genreName, &genreUnit)
 		contentResult := ContentResult{
 			ID:             contentID,
 			Name:           typeName,
