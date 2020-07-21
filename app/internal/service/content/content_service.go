@@ -11,7 +11,11 @@ import (
 )
 
 type Service struct{}
+
+// Content is alias of entity.Content
 type Content entity.Content
+
+// ContentResult is response data format for food data
 type ContentResult struct {
 	ID             int              `json:"id"`
 	Name           string           `json:"name"`
@@ -20,6 +24,8 @@ type ContentResult struct {
 	Image          string           `json:"image"`
 	Genre          entity.FoodGenre `json:"genre"`
 }
+
+// ContentResultList is reponse data format for
 type ContentResultList struct {
 	Foods []*ContentResult `json:"foods"`
 }
@@ -33,6 +39,8 @@ type PostForm struct {
 	FridgeID       int     `json:"fridge_id"`
 	FoodTypeID     int     `json:"food_type_id"`
 }
+
+// PostFormList is data format for endpoint POST: /contents
 type PostFormList struct {
 	FormList []*PostForm `json:"foods"`
 }
