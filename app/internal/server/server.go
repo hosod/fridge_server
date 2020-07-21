@@ -38,7 +38,7 @@ func makeRouter() *gin.Engine {
 	{
 		fridgeCtrl := fridge.Controller{}
 		// f.GET("", fridgeCtrl.ReadAll)
-		f.GET("", fridgeCtrl.ReadByID)
+		f.GET("/list", fridgeCtrl.ReadByID)
 		f.POST("", fridgeCtrl.Create)
 		f.PUT("", fridgeCtrl.Update)
 		f.DELETE("", fridgeCtrl.Delete)
@@ -50,7 +50,7 @@ func makeRouter() *gin.Engine {
 	fg := router.Group("/food_genres")
 	{
 		foodGenreCtrl := food_genre.Controller{}
-		fg.GET("", foodGenreCtrl.ReadAll)
+		fg.GET("list", foodGenreCtrl.ReadAll)
 		fg.POST("", foodGenreCtrl.Create)
 		fg.GET("/", foodGenreCtrl.ReadByID)
 		fg.PUT("/", foodGenreCtrl.Update)
