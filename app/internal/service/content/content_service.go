@@ -37,6 +37,7 @@ type PostForm struct {
 	ExpirationDate string  `json:"expiration_date"`
 	Quantity       float32 `json:"quantity"`
 	FridgeID       int     `json:"fridge_id"`
+	UserID         int     `json:"user_id"`
 	FoodTypeID     int     `json:"food_type_id"`
 }
 
@@ -163,6 +164,13 @@ func (s *Service) CreateModel(c *gin.Context) ([]Content, error) {
 	}
 
 	for _, postForm := range postFormList.FormList {
+		var user entity.User
+		if err := db.Where("id=?", postForm.UserID).First(&user).Error; err != nil {
+			log.Println(err)
+			continue
+		}
+		fridgeID := user.MyFridgeID
+
 		date, err := time.Parse("2006/01/02", postForm.ExpirationDate)
 		if err != nil {
 			log.Println(err)
@@ -171,7 +179,7 @@ func (s *Service) CreateModel(c *gin.Context) ([]Content, error) {
 		content = Content{
 			ExpirationDate: date,
 			Quantity:       postForm.Quantity,
-			FridgeID:       postForm.FridgeID,
+			FridgeID:       fridgeID,
 			FoodTypeID:     postForm.FoodTypeID,
 		}
 		if err := db.Create(&content).Error; err != nil {
