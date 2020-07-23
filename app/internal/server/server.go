@@ -39,6 +39,7 @@ func makeRouter() *gin.Engine {
 		fridgeCtrl := fridge.Controller{}
 		// f.GET("", fridgeCtrl.ReadAll)
 		f.GET("/list", fridgeCtrl.ReadByID)
+		f.GET("", fridgeCtrl.ReadByID)
 		f.POST("", fridgeCtrl.Create)
 		f.PUT("", fridgeCtrl.Update)
 		f.DELETE("", fridgeCtrl.Delete)
