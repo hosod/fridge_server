@@ -155,6 +155,8 @@ func (s *Service) GetByUserID(userID string) (ContentResultList, error) {
 // CreateModel create content data and return it
 func (s *Service) CreateModel(c *gin.Context) ([]Content, error) {
 	db := database.GetDB()
+
+	uid, ok := c.GetQuery("uid")
 	var postFormList PostFormList
 	var content Content
 	contentList := []Content{}
@@ -162,10 +164,17 @@ func (s *Service) CreateModel(c *gin.Context) ([]Content, error) {
 		log.Println("BindJSON error")
 		return contentList, err
 	}
+	var user entity.User
+	var err error
+	if ok {
+		err = db.Where("id=?", uid).First(&user).Error
+	}
 
 	for _, postForm := range postFormList.FormList {
-		var user entity.User
-		if err := db.Where("id=?", postForm.UserID).First(&user).Error; err != nil {
+		if !ok {
+			err = db.Where("id=?", postForm.UserID).First(&user).Error
+		}
+		if err != nil {
 			log.Println(err)
 			continue
 		}
